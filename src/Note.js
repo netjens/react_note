@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Draggable from 'react-draggable'
 
 
 class Note extends Component {
@@ -57,6 +58,7 @@ class Note extends Component {
 
     renderDisplayNote() {
         return (
+             <Draggable>
             <div className="note" style={this.style}>
                 <p>{this.props.children}</p>
                 <span>
@@ -65,6 +67,7 @@ class Note extends Component {
                 </span>
 
             </div>
+            </Draggable>
         )
     }
 
