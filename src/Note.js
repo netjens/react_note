@@ -29,6 +29,19 @@ class Note extends Component {
         
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        return this.props.children !== nextProps.children || this.state !== nextState
+    }
+
+
+    componentDidUpdate(){
+        if(this.state.editing){
+            this.refs.newText.focus()
+            this.refs.newText.select()
+
+        }
+    }
+
     randomBetween(x,y,s){
         return (x+Math.ceil(Math.random()*(y-x)))+s
     }
@@ -36,7 +49,7 @@ class Note extends Component {
     renderEditNote() {
         return (
             <div className="note" style={this.style}>
-                <textarea ref="newText"></textarea>
+                <textarea ref="newText" defaultValue={this.props.children}></textarea>
                 <button onClick={this.save.bind(this)}>SAVE</button>
             </div>
         )
