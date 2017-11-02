@@ -7,16 +7,27 @@ class Board extends Component {
     static propTypes = {
         count: PropTypes.instanceOf(Number)
     }
+ 
 
     state = {
-        notes: [
-            { id: 0, note: 'Call Bob' },
-            { id: 1, note: 'Email Sarah' },
-            { id: 2, note: 'Eat lunch' },
-            { id: 3, note: 'Finish proposal' }]
+        notes: []
     }
 
-    update = (newText, id) => {
+
+    nextId(){
+        this.uniqueId = this.uniqueId ? this.uniqueId : 0
+        return ++this.uniqueId
+    }
+    add(text){
+        let notes = [
+            ...this.state.notes,{
+                id: this.nextId(),note:text
+            }
+        ]
+        this.setState({notes})
+    }
+
+    update (newText, id)  {
         let notes = this.state.notes.map(
             note => (note.id !== id)
                 ? note : {
@@ -26,17 +37,19 @@ class Board extends Component {
         )
         this.setState({ notes })
     }
-
-    remove = (id) =>{
+   
+    remove (id){
         var notes = this.state.notes.filter(note => note.id !== id)
         this.setState({ notes })
     }
 
-    eachNote = (note) => {
+
+
+    eachNote (note)  {
         return (<Note key={note.id}
             id={note.id}
-            onChange={this.update}
-            onRemove={this.remove}>
+            onChange={this.update.bind(this)}
+            onRemove={this.remove.bind(this)}>
             {note.note}
 
         </Note>)
@@ -45,7 +58,8 @@ class Board extends Component {
     render() {
         return (
             <div className='board'>
-                {this.state.notes.map(this.eachNote)}
+                {this.state.notes.map(this.eachNote.bind(this))}
+                <button onClick={()=>this.add('new note')}>+</button>
             </div>
         )
     }
